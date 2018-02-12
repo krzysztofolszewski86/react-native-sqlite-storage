@@ -231,8 +231,14 @@ public class SQLitePlugin extends ReactContextBaseJavaModule {
             case open:
                 o = args.getJSONObject(0);
                 dbname = o.getString("name");
+
+                String password = null;
+
+                if (o.has("key")) {
+                    password = o.getString("key");
+                }
                 // open database and start reading its queue
-                this.startDatabase(dbname, o, cbc);
+                this.startDatabase(dbname, password, o, cbc);
                 break;
 
             case close:
