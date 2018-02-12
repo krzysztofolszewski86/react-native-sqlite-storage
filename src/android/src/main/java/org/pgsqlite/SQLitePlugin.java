@@ -337,13 +337,14 @@ public class SQLitePlugin extends ReactContextBaseJavaModule {
     // LOCAL METHODS
     // --------------------------------------------------------------------------
 
-    /**
+ /**
      *
      * @param dbname - The name of the database file
+     * @param password - password used to encrypt database
      * @param options - options passed in from JS
      * @param cbc - JS callback context
      */
-    private void startDatabase(String dbname, JSONObject options, CallbackContext cbc) {
+    private void startDatabase(String dbname, String password, JSONObject options, CallbackContext cbc) {
         // TODO: is it an issue that we can orphan an existing thread?  What should we do here?
         // If we re-use the existing DBRunner it might be in the process of closing...
         DBRunner r = dbrmap.get(dbname);
@@ -355,11 +356,11 @@ public class SQLitePlugin extends ReactContextBaseJavaModule {
             // than orphaning the old DBRunner.
             cbc.success("database started");
         } else {
-            r = new DBRunner(dbname, options, cbc);
+            r = new DBRunner(dbname, password, options, cbc);
             dbrmap.put(dbname, r);
             this.getThreadPool().execute(r);
         }
-    }
+}
 
     /**
      * Open a database.
@@ -895,6 +896,7 @@ public class SQLitePlugin extends ReactContextBaseJavaModule {
 
     private class DBRunner implements Runnable {
         final String dbname;
+        final String password;
         final int openFlags;
         private String assetFilename;
         private boolean androidLockWorkaround;
@@ -903,8 +905,9 @@ public class SQLitePlugin extends ReactContextBaseJavaModule {
 
         SQLiteDatabase mydb;
 
-        DBRunner(final String dbname, JSONObject options, CallbackContext cbc) {
+        DBRunner(final String dbname, final String password, JSONObject options, CallbackContext cbc) {
             this.dbname = dbname;
+            this.password = password;
             int openFlags = SQLiteDatabase.OPEN_READWRITE | SQLiteDatabase.CREATE_IF_NECESSARY;
             try {
                 this.assetFilename = options.has("assetFilename") ? options.getString("assetFilename") : null;
@@ -926,7 +929,7 @@ public class SQLitePlugin extends ReactContextBaseJavaModule {
 
         public void run() {
             try {
-                this.mydb = openDatabase(dbname, this.assetFilename, this.openFlags, this.openCbc);
+                this.mydb = openDatabase(dbname, password, this.assetFilename, this.openFlags, this.openCbc);
             } catch (Exception e) {
                 FLog.e(TAG, "unexpected error, stopping db thread", e);
                 dbrmap.remove(dbname);
