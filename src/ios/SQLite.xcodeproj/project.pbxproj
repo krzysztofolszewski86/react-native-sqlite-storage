@@ -10,6 +10,7 @@
 		C7DCD6E41BE0295900F3300E /* SQLite.h in Headers */ = {isa = PBXBuildFile; fileRef = C7DCD6E21BE0295900F3300E /* SQLite.h */; };
 		C7DCD6E51BE0295A00F3300E /* SQLite.m in Sources */ = {isa = PBXBuildFile; fileRef = C7DCD6E31BE0295900F3300E /* SQLite.m */; };
 		C7DCD7141BE2D5DE00F3300E /* SQLiteResult.m in Sources */ = {isa = PBXBuildFile; fileRef = C7DCD7131BE2D5DE00F3300E /* SQLiteResult.m */; };
+		D761A01F20481A490057A244 /* sqlite3.h in Headers */ = {isa = PBXBuildFile; fileRef = D761A01D20481A490057A244 /* sqlite3.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -29,6 +30,7 @@
 		C7DCD6E31BE0295900F3300E /* SQLite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQLite.m; sourceTree = "<group>"; };
 		C7DCD7131BE2D5DE00F3300E /* SQLiteResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQLiteResult.m; sourceTree = "<group>"; };
 		C7DCD7151BE2D61E00F3300E /* SQLiteResult.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SQLiteResult.h; sourceTree = "<group>"; };
+		D761A01D20481A490057A244 /* sqlite3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sqlite3.h; sourceTree = "<group>"; };
 		E23D7B471ACEFE2A00C59171 /* libSQLite.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libSQLite.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -46,6 +48,7 @@
 		C7DCD6E11BE0293D00F3300E /* SQLite */ = {
 			isa = PBXGroup;
 			children = (
+				D761A01D20481A490057A244 /* sqlite3.h */,
 				C7DCD6E21BE0295900F3300E /* SQLite.h */,
 				C7DCD6E31BE0295900F3300E /* SQLite.m */,
 				C7DCD7151BE2D61E00F3300E /* SQLiteResult.h */,
@@ -79,6 +82,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D761A01F20481A490057A244 /* sqlite3.h in Headers */,
 				C7DCD6E41BE0295900F3300E /* SQLite.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -174,6 +178,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
+					SQLCIPHER,
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -185,6 +190,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "-DSQLITE_HAS_CODEC";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -210,6 +216,7 @@
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_PREPROCESSOR_DEFINITIONS = SQLCIPHER;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
@@ -218,6 +225,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_CFLAGS = "-DSQLITE_HAS_CODEC";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
