@@ -36,6 +36,7 @@ import net.sqlcipher.Cursor;
 import net.sqlcipher.CursorWindow;
 import net.sqlcipher.database.SQLiteCursor;
 import net.sqlcipher.database.SQLiteDatabase;
+import net.sqlcipher.database.SQLiteDatabaseHook;
 import net.sqlcipher.database.SQLiteException;
 import net.sqlcipher.database.SQLiteStatement;
 
@@ -434,7 +435,16 @@ public class SQLitePlugin extends ReactContextBaseJavaModule {
             Log.v("info", "Opening sqlite db: " + dbfile.getAbsolutePath());
 
             SQLiteDatabase.loadLibs(this.getContext());
-            SQLiteDatabase mydb = SQLiteDatabase.openDatabase(dbfile.getAbsolutePath(), password, null, openFlags);
+
+            SQLiteDatabaseHook mHook = new SQLiteDatabaseHook() {
+                public void preKey(SQLiteDatabase database) {}
+    
+                public void postKey(SQLiteDatabase database) {
+                    database.rawExecSQL("PRAGMA cipher_compatibility=3;");
+                }
+            };
+
+            SQLiteDatabase mydb = SQLiteDatabase.openDatabase(dbfile.getAbsolutePath(), password, null, openFlags, mHook);
 
             if (cbc != null) // needed for Android locking/closing workaround
                 cbc.success("database open");
